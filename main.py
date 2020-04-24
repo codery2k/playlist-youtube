@@ -37,9 +37,7 @@ def print_yt_infos(query):
         print_yt_info(yt_info)
 
 def print_yt_info(yt_info):
-    print(yt_info.link)
-    print(yt_info.uploader)
-    print(yt_info.title)
+    print(yt_info.link,"\t", yt_info.uploader,"\t", yt_info.title,end=' ')
     print()
 
 def get_yt_info(query):
