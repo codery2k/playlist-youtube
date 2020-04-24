@@ -7,7 +7,7 @@
 import os
 import googleapiclient.discovery
 import googleapiclient.errors
-# import csv
+import csv
 
 api_service_name = "youtube"
 api_version = "v3"
@@ -67,10 +67,46 @@ def hit_yt(query):
     response = request.execute()
     return response    
 
+def get_top_filename():
+    top_filename=None
+    with open(filename) as file:
+        csv_reader=csv.reader(file)
+        for row in csv_reader:
+            if row[1]=="0":
+                top_filename=row[0].rstrip(".mp3")
+                break
+    return top_filename
+
+def update_track_file():
+    pass
+    # open track_file for reading and temp_file for writing     
+    # load all lines from track_file
+    # loop through lines to find first occurence where line[1]==0
+    # update it so line[1]==1
+    # write to temp_file
+    # remove track_file
+    # rename temp_file to track_file
+
+
 def main():
-    # print_yt_infos("Wish you were here pink floyd topic")
     load_track_file()
     
+    query=get_top_filename()
+
+    while not(query is None):
+        print_yt_infos(query)
+        proceed=input("Proceed? [y/n]:")
+        if(proceed=="y"):
+            update_track_file()
+            query=get_top_filename()
+        else:
+            break
+    
+    if(query is None):
+        print("Phew! It's all done ✌")
+
+
+
 
 if __name__ == "__main__":
     main()
