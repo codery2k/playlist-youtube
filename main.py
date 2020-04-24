@@ -14,7 +14,7 @@ api_version = "v3"
 developerKey=os.getenv("YOUTUBE_DATA_API_KEY")
 yt_video_base_url="https://www.youtube.com/watch?v="
 max_results=3
-filename="track.csv"
+filename="track"
 music_directory="/home/coder/Music/Assorted"
 
 class Yt_info:
@@ -24,9 +24,9 @@ class Yt_info:
         self.link=link
 
 def load_track_file():
-    if(not(os.path.isfile(filename))):
+    if(not(os.path.isfile(filename+".csv"))):
         files=os.listdir(music_directory)
-        with open(filename, 'w') as track_file:
+        with open(filename+".csv", 'w') as track_file:
             # writer = csv.writer(file)
             for file in files:
                 track_file.write(file+",0"+"\n")
@@ -69,7 +69,7 @@ def hit_yt(query):
 
 def get_top_filename():
     top_filename=None
-    with open(filename) as file:
+    with open(filename+".csv") as file:
         csv_reader=csv.reader(file)
         for row in csv_reader:
             if row[1]=="0":
@@ -77,15 +77,20 @@ def get_top_filename():
                 break
     return top_filename
 
-def update_track_file():
-    pass
-    # open track_file for reading and temp_file for writing     
-    # load all lines from track_file
-    # loop through lines to find first occurence where line[1]==0
-    # update it so line[1]==1
-    # write to temp_file
-    # remove track_file
-    # rename temp_file to track_file
+def update_track_file(query):
+    with open(filename+".csv", 'r') as file:
+        lines=file.readlines()
+        updated_lines=[]
+        for line in lines:
+            if(line[:-7]==query):
+                line=line[:-2]+"1\n"    
+            updated_lines.append(line)
+
+        with open(filename+"_temp"+".csv", "w") as track_file:
+            track_file.writelines(updated_lines)
+
+    os.remove(filename+".csv")
+    os.rename(filename+"_temp"+".csv", filename+".csv")
 
 
 def main():
@@ -95,9 +100,9 @@ def main():
 
     while not(query is None):
         print_yt_infos(query)
-        proceed=input("Proceed? [y/n]:")
+        proceed=input("Proceed? [y/n]: ")
         if(proceed=="y"):
-            update_track_file()
+            update_track_file(query)
             query=get_top_filename()
         else:
             break
