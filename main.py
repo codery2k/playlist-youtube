@@ -32,6 +32,10 @@ def load_track_file():
                 track_file.write(file+",0"+"\n")
 
 def print_yt_infos(query):
+    print()
+    print()
+    print(query)
+    print()
     yt_infos=get_yt_info(query)
     for yt_info in yt_infos:
         print_yt_info(yt_info)
@@ -59,7 +63,7 @@ def hit_yt(query):
     request = youtube.search().list(
         part="snippet",
         maxResults=max_results,
-        q=query,
+        q=query+" topic",
         type="video"
     )
     response = request.execute()
