@@ -14,7 +14,7 @@ api_version = "v3"
 developerKey=os.getenv("YOUTUBE_DATA_API_KEY")
 yt_video_base_url="https://www.youtube.com/watch?v="
 max_results=3
-filename="track"
+filename=os.getenv("HOME")+"/Downloads/track"
 music_directory="/home/coder/Music/Assorted"
 
 class Yt_info:
