@@ -5,14 +5,14 @@ import os
 import csv
 from ytmusicapi import YTMusic
 
-yt_video_base_url="https://music.youtube.com/watch?v="
+yt_music_base_url="https://music.youtube.com/watch?v="
 filename=os.getenv("HOME")+"/Downloads/track"
 music_directory="/home/coder/Music/Assorted"
 
 class Yt_info:
-    def __init__(self, title, uploader, link):
+    def __init__(self, title, artist, link):
         self.title=title
-        self.uploader=uploader
+        self.artist=artist
         self.link=link
 
 def load_track_file():
@@ -33,28 +33,28 @@ def print_yt_infos(query):
         print_yt_info(yt_info)
 
 def print_yt_info(yt_info):
-    print(yt_info.link,"\t", yt_info.uploader,"\t", yt_info.title,end=' ')
+    print(yt_info.link,"\t", yt_info.artist,"\t", yt_info.title,end=' ')
     print()
 
 def get_yt_info(query):
-    yt_response=hit_yt(query)
+    yt_response=hit_yt_music(query)
     yt_infos=[]
     # extract results from response
-    # for item in yt_response.get('items',[]):
-    #     item_title=item.get('snippet').get('title')
-    #     item_uploader=item.get('snippet').get('channelTitle')
-    #     item_link=create_yt_video_link(item.get('id').get('videoId'))
-    #     yt_info=Yt_info(item_title, item_uploader, item_link)
-    #     yt_infos.append(yt_info)
+    for item in yt_response:
+        item_title=item.get('title')
+        item_artist=item.get('artists')[0].get('name')
+        item_link=create_yt_music_link(item.get('videoId'))
+        yt_info=Yt_info(item_title, item_artist, item_link)
+        yt_infos.append(yt_info)
     return yt_infos
 
-def create_yt_video_link(video_id):
-    return yt_video_base_url+video_id
+def create_yt_music_link(video_id):
+    return yt_music_base_url+video_id
 
-def hit_yt(query):
-    # call ytmusicapi with query, 'songs' and ?max_results
-    # return response    
-    pass
+def hit_yt_music(query):
+    ytmusic=YTMusic()
+    response=ytmusic.search(query, 'songs')
+    return response
 
 def get_top_filename():
     top_filename=None
