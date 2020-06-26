@@ -31,7 +31,10 @@ def print_yt_infos(query, count):
     print(query)
     print()
     yt_infos=get_yt_info(query)
-    for i in range(0, count):
+    limit=count
+    if(len(yt_infos)<limit):
+        limit=len(yt_infos)
+    for i in range(0, limit):
         print_yt_info(yt_infos[i])
 
 
