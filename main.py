@@ -8,6 +8,7 @@ from ytmusicapi import YTMusic
 yt_music_base_url="https://music.youtube.com/watch?v="
 filename=os.getenv("HOME")+"/Downloads/track"
 music_directory="/home/coder/Music/Assorted"
+result_count=3
 
 class Yt_info:
     def __init__(self, title, artist, link):
@@ -23,14 +24,16 @@ def load_track_file():
             for file in files:
                 track_file.write(file+",0"+"\n")
 
-def print_yt_infos(query):
+def print_yt_infos(query, count):
     print()
     print()
     print(query)
     print()
     yt_infos=get_yt_info(query)
-    for yt_info in yt_infos:
-        print_yt_info(yt_info)
+    for i in range(0, count):
+        print_yt_info(yt_infos[i])
+    # for yt_info in yt_infos:
+    #     print_yt_info(yt_info)
 
 def print_yt_info(yt_info):
     print(yt_info.link,"\t", yt_info.artist,"\t", yt_info.title,end=' ')
@@ -88,7 +91,7 @@ def main():
     query=get_top_filename()
 
     while not(query is None):
-        print_yt_infos(query)
+        print_yt_infos(query, result_count)
         proceed=input("Proceed? [y/n]: ")
         if(proceed=="y"):
             update_track_file(query)
