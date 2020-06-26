@@ -45,7 +45,10 @@ def get_yt_info(query):
     for item in yt_response:
         item_title=item.get('title')
         item_artist=item.get('artists')[0].get('name')
-        item_album=item.get('album').get('name')
+        if(not(item.get('album') is None)):
+            item_album=item.get('album').get('name')
+        else:
+            item_album=None
         item_link=create_yt_music_link(item.get('videoId'))
         yt_info=Yt_info(item_title, item_artist, item_link, item_album)
         yt_infos.append(yt_info)
