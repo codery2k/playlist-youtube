@@ -68,7 +68,7 @@ def get_top_filename():
         csv_reader=csv.reader(file)
         for row in csv_reader:
             if row[1]=="0":
-                top_filename=row[0].rstrip(".mp3")
+                top_filename=row[0][:-4]
                 break
     return top_filename
 
