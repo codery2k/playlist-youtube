@@ -11,10 +11,11 @@ music_directory="/home/coder/Music/Assorted"
 result_count=3
 
 class Yt_info:
-    def __init__(self, title, artist, link):
+    def __init__(self, title, artist, link, album):
         self.title=title
         self.artist=artist
         self.link=link
+        self.album=album
 
 def load_track_file():
     if(not(os.path.isfile(filename+".csv"))):
@@ -32,22 +33,21 @@ def print_yt_infos(query, count):
     yt_infos=get_yt_info(query)
     for i in range(0, count):
         print_yt_info(yt_infos[i])
-    # for yt_info in yt_infos:
-    #     print_yt_info(yt_info)
+
 
 def print_yt_info(yt_info):
-    print(yt_info.link,"\t", yt_info.artist,"\t", yt_info.title,end=' ')
+    print(yt_info.link,"\t", yt_info.artist,"\t", yt_info.title,"\t", yt_info.album, end=' ')
     print()
 
 def get_yt_info(query):
     yt_response=hit_yt_music(query)
     yt_infos=[]
-    # extract results from response
     for item in yt_response:
         item_title=item.get('title')
         item_artist=item.get('artists')[0].get('name')
+        item_album=item.get('album').get('name')
         item_link=create_yt_music_link(item.get('videoId'))
-        yt_info=Yt_info(item_title, item_artist, item_link)
+        yt_info=Yt_info(item_title, item_artist, item_link, item_album)
         yt_infos.append(yt_info)
     return yt_infos
 
